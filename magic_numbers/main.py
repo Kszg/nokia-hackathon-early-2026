@@ -9,8 +9,7 @@ def main():
         parsed_lines.append(parse_input_line(line))
 
     for line in parsed_lines:
-        if (len(line) % 2 == 0):
-            print(f"{line}: {next_palindrome(line)}")
+        print(next_palindrome(line))
 
 def parse_input_line(input: str) -> str:
     if ("^" in input):
@@ -24,14 +23,31 @@ def parse_input_line(input: str) -> str:
     return input
 
 def next_palindrome(input: str) -> str:
-    first_half = input[:len(input) // 2]
-    palindrome = first_half + first_half[::-1]
-    
-    if (int(palindrome) > int(input)): return palindrome
+    if (len(input) % 2 == 0):
+        first_half = input[:len(input) // 2]
+        palindrome = first_half + first_half[::-1]
+        
+        if (int(palindrome) > int(input)): return palindrome
 
-    first_half = str(int(first_half) + 1)
+        first_half = str(int(first_half) + 1)
 
-    return first_half + first_half[::-1]
+        return first_half + first_half[::-1]
+    else:
+        first_half = input[:len(input) // 2]
+        middle_char = input[len(input) // 2]
+        
+        palindrome = first_half + middle_char + first_half[::-1]
+        
+        if (int(palindrome) > int(input)): return palindrome
+        
+        first_half_and_middle = int(first_half + middle_char)
+        new_first_half_and_middle = str(first_half_and_middle + 1)
+        new_first_half = new_first_half_and_middle[:-1]
+        new_middle_char = new_first_half_and_middle[-1] if len(str(first_half_and_middle)) == len(new_first_half_and_middle) else ""
+        
+        palindrome = new_first_half + new_middle_char + new_first_half[::-1]
+        
+        return palindrome
 
 if __name__ == "__main__":
     main()
