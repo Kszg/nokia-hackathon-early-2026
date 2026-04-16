@@ -8,7 +8,9 @@ def main():
     for line in input_lines:
         parsed_lines.append(parse_input_line(line))
 
-    print(parsed_lines)
+    for line in parsed_lines:
+        if (len(line) % 2 == 0):
+            print(f"{line}: {next_palindrome(line)}")
 
 def parse_input_line(input: str) -> str:
     if ("^" in input):
@@ -20,6 +22,16 @@ def parse_input_line(input: str) -> str:
         return str(base**exponent)
     
     return input
+
+def next_palindrome(input: str) -> str:
+    first_half = input[:len(input) // 2]
+    palindrome = first_half + first_half[::-1]
+    
+    if (int(palindrome) > int(input)): return palindrome
+
+    first_half = str(int(first_half) + 1)
+
+    return first_half + first_half[::-1]
 
 if __name__ == "__main__":
     main()
