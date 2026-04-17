@@ -20,7 +20,7 @@ def parse_input_line(input: str) -> str:
 
 def next_palindrome(input: str) -> str:
     middle_index = len(input)//2
-    odd_length = len(input)%2 != 0
+    is_odd_length = len(input)%2 != 0
 
     first_half = input[0:middle_index]
     middle_char = input[middle_index:len(input)-middle_index] # Empty in case of even-length input
@@ -34,8 +34,8 @@ def next_palindrome(input: str) -> str:
     length_increased = len(start) > len(first_half) + len(middle_char)
     if (length_increased): return "1" + (len(input)-1)*"0" + "1"
 
-    first_half = start[0:-1] if odd_length else start
-    middle_char = start[-1] if odd_length else ""
+    first_half = start[0:-1] if is_odd_length else start
+    middle_char = start[-1] if is_odd_length else ""
 
     return first_half + middle_char + first_half[::-1]
 
