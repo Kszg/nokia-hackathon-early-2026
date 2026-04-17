@@ -3,13 +3,9 @@ from pathlib import Path
 def main():
     data = Path(Path(__file__).parent / "input.txt").read_text(encoding="utf-8")
     input_lines = data.splitlines()
-    parsed_lines = []
 
     for line in input_lines:
-        parsed_lines.append(parse_input_line(line))
-
-    for line in parsed_lines:
-        print(next_palindrome(line))
+        print(next_palindrome(parse_input_line(line)))
 
 def parse_input_line(input: str) -> str:
     if ("^" in input):
@@ -23,31 +19,25 @@ def parse_input_line(input: str) -> str:
     return input
 
 def next_palindrome(input: str) -> str:
-    if (len(input) % 2 == 0):
-        first_half = input[:len(input) // 2]
-        palindrome = first_half + first_half[::-1]
-        
-        if (int(palindrome) > int(input)): return palindrome
+    middle_index = len(input)//2
+    is_odd_length = len(input)%2 != 0
 
-        first_half = str(int(first_half) + 1)
+    first_half = input[0:middle_index]
+    middle_char = input[middle_index:len(input)-middle_index] # Empty in case of even-length input
 
-        return first_half + first_half[::-1]
-    else:
-        first_half = input[:len(input) // 2]
-        middle_char = input[len(input) // 2]
-        
-        palindrome = first_half + middle_char + first_half[::-1]
-        
-        if (int(palindrome) > int(input)): return palindrome
-        
-        first_half_and_middle = int(first_half + middle_char)
-        new_first_half_and_middle = str(first_half_and_middle + 1)
-        new_first_half = new_first_half_and_middle[:-1]
-        new_middle_char = new_first_half_and_middle[-1] if len(str(first_half_and_middle)) == len(new_first_half_and_middle) else ""
-        
-        palindrome = new_first_half + new_middle_char + new_first_half[::-1]
-        
-        return palindrome
+    palindrome = first_half + middle_char + first_half[::-1]
+
+    if (int(palindrome) > int(input)): return palindrome
+
+    start = str(int(first_half + middle_char) + 1)
+
+    length_increased = len(start) > len(first_half) + len(middle_char)
+    if (length_increased): return "1" + (len(input)-1)*"0" + "1"
+
+    first_half = start[0:-1] if is_odd_length else start
+    middle_char = start[-1] if is_odd_length else ""
+
+    return first_half + middle_char + first_half[::-1]
 
 if __name__ == "__main__":
     main()
