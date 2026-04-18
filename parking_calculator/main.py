@@ -32,14 +32,10 @@ def parking_fee(start: str, end: str) -> int:
 
     discounted_hours_remaining = DISCOUNTED_HOURS
 
-    if (bm.unbilled_time < (24*HOUR)):
-        # 24 hours is billed for a fixed fare, so the first 30 minutes shouldn't be free.
-        bm.bill_time(FREE_PEROID, 0)
-    else:
-        whole_24_hours = bm.unbilled_time // (24*HOUR)
-        bm.bill_time(whole_24_hours * (24*HOUR), whole_24_hours * DAILY_RATE)
+    whole_24_hours = bm.unbilled_time // (24*HOUR)
+    bm.bill_time(whole_24_hours * (24*HOUR), whole_24_hours * DAILY_RATE)
 
-        # discounted_hours_remaining -= (whole_24_hours*24*HOUR)
+    bm.bill_time(FREE_PEROID, 0)
     
     while bm.unbilled_time > 0:
         if (discounted_hours_remaining > 0):
