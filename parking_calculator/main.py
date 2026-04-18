@@ -39,7 +39,7 @@ def parking_fee(start: str, end: str) -> int:
         whole_24_hours = bm.unbilled_time // (24*HOUR)
         bm.bill_time(whole_24_hours * (24*HOUR), whole_24_hours * DAILY_RATE)
 
-        discounted_hours_remaining -= (whole_24_hours*24*HOUR)
+        # discounted_hours_remaining -= (whole_24_hours*24*HOUR)
     
     while bm.unbilled_time > 0:
         if (discounted_hours_remaining > 0):
