@@ -3,12 +3,15 @@ from pathlib import Path
 from billing_manager import BillingManager
 
 def main():
-    # data = Path("input.txt").read_text(encoding="utf-8")
-    # print(data, end="")
-    print(parking_fee("2026-03-30 00:00:00", "2026-03-30 00:20:00"))
-    print(parking_fee("2026-03-30 00:00:00", "2026-03-30 02:00:00"))
-    print(parking_fee("2026-03-30 00:00:00", "2026-03-30 04:00:00"))
-    print(parking_fee("2026-03-30 00:00:00", "2026-03-31 00:00:00"))
+    data = Path(Path(__file__).parent / "input.txt").read_text(encoding="utf-8")
+    input_lines = data.splitlines()
+
+    for line in input_lines[2:]:
+        if (len(line) == 0): continue
+
+        line_data = line.split("\t\t")
+        print("\n" + line)
+        print(parking_fee(line_data[1], line_data[2]))
 
 def parking_fee(start: str, end: str) -> int:
     MINUTE = 60
