@@ -67,7 +67,7 @@ def print_and_write_to_file(bills: list, file_name: str):
         write_and_print("RENDSZAM\tDIJ", f)
 
         for bill in bills:
-            write_and_print(f"{bill[0]}\t{bill[1]}", f)
+            write_and_print(f"{bill[0]}\t\t{bill[1]}", f)
 
 def write_and_print(str: str, f: TextIOWrapper):
     f.write(str + "\n")
