@@ -1,4 +1,5 @@
 from datetime import datetime
+from io import TextIOWrapper
 from pathlib import Path
 from billing_manager import BillingManager
 
@@ -6,12 +7,16 @@ def main():
     data = Path(Path(__file__).parent / "input.txt").read_text(encoding="utf-8")
     input_lines = data.splitlines()
 
+    bills = []
+
     for line in input_lines[2:]:
         if (len(line) == 0): continue
 
         line_data = line.split("\t\t")
-        print("\n" + line)
-        print(parking_fee(line_data[1], line_data[2]))
+        bills.append([line_data[0], int(parking_fee(line_data[1], line_data[2]))])
+
+    print_and_write_to_file(bills, "output.txt")
+
 
 def parking_fee(start: str, end: str) -> int:
     MINUTE = 60
@@ -54,6 +59,19 @@ def timespan_seconds(start: str, end: str) -> int:
     end_dt = datetime.strptime(end, FORMAT)
 
     return (end_dt - start_dt).total_seconds()
+
+def print_and_write_to_file(bills: list, file_name: str):
+    p = Path(Path(__file__).parent / file_name)
+    
+    with(open(p, "wt", encoding="utf-8") as f):
+        write_and_print("RENDSZAM\tDIJ", f)
+
+        for bill in bills:
+            write_and_print(f"{bill[0]}\t{bill[1]}", f)
+
+def write_and_print(str: str, f: TextIOWrapper):
+    f.write(str + "\n")
+    print(str)
 
 if __name__ == "__main__":
     main()
