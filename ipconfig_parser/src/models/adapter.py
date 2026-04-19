@@ -26,8 +26,3 @@ class Adapter:
         self.subnet_mask = subnet_mask
         self.default_gateway = default_gateway
         self.dns_servers = dns_servers
-
-    def to_dict():
-        return {
-            
-        }
