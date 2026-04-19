@@ -163,3 +163,4 @@ cython_debug/
 */output.txt
 */execution_time.txt
 */result.json
+.DS_Store
