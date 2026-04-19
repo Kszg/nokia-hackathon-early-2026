@@ -3,6 +3,8 @@ from io import TextIOWrapper
 from pathlib import Path
 from billing_manager import BillingManager
 
+DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+
 def main():
     data = Path(Path(__file__).parent / "input.txt").read_text(encoding="utf-8")
     input_lines = data.splitlines()
@@ -17,8 +19,10 @@ def main():
 
     print_and_write_to_file(bills, "output.txt")
 
-
 def parking_fee(start: str, end: str) -> int:
+    error = get_error(start, end)
+    if (error is not None): raise Exception(error)
+
     MINUTE = 60
     HOUR = (60*MINUTE)
 
@@ -48,11 +52,20 @@ def parking_fee(start: str, end: str) -> int:
     
     return bm.bill
 
-def timespan_seconds(start: str, end: str) -> int:
-    FORMAT = "%Y-%m-%d %H:%M:%S"
+def get_error(start: str, end: str) -> str:
+    try: start_dt = datetime.strptime(start, DATETIME_FORMAT)
+    except ValueError: return "Start time does not match format."
+    
+    try: end_dt = datetime.strptime(end, DATETIME_FORMAT)
+    except ValueError: return "End time does not match format."
 
-    start_dt = datetime.strptime(start, FORMAT)
-    end_dt = datetime.strptime(end, FORMAT)
+    if (start_dt >= end_dt): return "End time must be after start."
+
+    return None
+
+def timespan_seconds(start: str, end: str) -> int:
+    start_dt = datetime.strptime(start, DATETIME_FORMAT)
+    end_dt = datetime.strptime(end, DATETIME_FORMAT)
 
     return (end_dt - start_dt).total_seconds()
 
